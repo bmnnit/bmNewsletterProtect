@@ -16,10 +16,11 @@ class bmnewsletterprotect extends bmnewsletterprotect_parent {
     public function send() {
 
         $hit = false;
+        $tmpdir = oxRegistry::getConfig()->getConfigParam('sCompileDir');
         $oxutilsserver = oxRegistry::get("oxUtilsServer");
         $remoteIp = $oxutilsserver->getRemoteAddress();
         $cleanRemoteIp = long2ip(ip2long($remoteIp) & 0xFFFFFF00); //clean the last 8 octets
-        $handle = fopen("tmp/newsletterIp.log", "r");
+        $handle = fopen($tmpdir, "r");
         
         if ($handle) {
             while (($ip = fgets($handle)) !== false) {
@@ -40,7 +41,7 @@ class bmnewsletterprotect extends bmnewsletterprotect_parent {
             //stupid way to detect errors, better way welcome.
             $errors = oxRegistry::getSession()->getVariable('Errors');
             if (count($errors['default']) <= 0) {
-                file_put_contents("tmp/newsletterIp.log", $cleanRemoteIp);
+                file_put_contents($tmpdir, $cleanRemoteIp);
             }
         }
     }
