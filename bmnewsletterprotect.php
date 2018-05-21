@@ -16,11 +16,11 @@ class bmnewsletterprotect extends bmnewsletterprotect_parent {
     public function send() {
 
         $hit = false;
-        $tmpdir = oxRegistry::getConfig()->getConfigParam('sCompileDir');
+        $tmpdir = oxRegistry::getConfig()->getConfigParam('sCompileDir') . "newsletterProtect.txt";
         $oxutilsserver = oxRegistry::get("oxUtilsServer");
         $remoteIp = $oxutilsserver->getRemoteAddress();
         $cleanRemoteIp = long2ip(ip2long($remoteIp) & 0xFFFFFF00); //clean the last 8 octets
-        $handle = fopen($tmpdir, "r");
+        $handle = fopen($tmpdir , "r");
         
         if ($handle) {
             while (($ip = fgets($handle)) !== false) {
@@ -33,8 +33,9 @@ class bmnewsletterprotect extends bmnewsletterprotect_parent {
         }
 
         if ($hit) {
+            //TODO make it better
             oxRegistry::getUtils()->logger("Newsletter Anmeldung geblockt", true);
-            die();
+            die("Newsletter Anmeldung geblockt");
         } else {
             parent::send();
 
