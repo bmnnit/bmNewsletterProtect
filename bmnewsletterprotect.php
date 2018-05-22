@@ -35,7 +35,7 @@ class bmnewsletterprotect extends bmnewsletterprotect_parent {
         if ($hit) {
             //TODO make it better
             oxRegistry::getUtils()->logger("Newsletter Anmeldung geblockt", true);
-            die("Newsletter Anmeldung geblockt");
+            die("Newsletter Anmeldung geblockt: " .  $oxutilsserver->getRemoteAddress() );
         } else {
             parent::send();
 
